@@ -31,7 +31,7 @@ public class ProductController {
             @RequestParam(required = false) String search,
             // 排序
             @RequestParam(defaultValue = "created_date") String orderBy, // 由什麼欄位去排序, 預設是要去呈現最新的商品
-            @RequestParam(defaultValue = "DESC") String sort,            // 升序還是降序，降序，大->小
+            @RequestParam(defaultValue = "desc") String sort,            // 升序還是降序，降序，大->小
             // 分頁 Pagination
             // 考慮資料庫效能，不必全部傳遞
             // 最大不可超過 1000 不可以比 0 還小，避免有奇怪的負數
