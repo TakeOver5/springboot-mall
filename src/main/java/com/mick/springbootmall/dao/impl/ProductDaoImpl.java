@@ -29,19 +29,7 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
-        // 拼接查詢
-        if (productQueryParams.getCategory() != null) {
-            // AND 前面要預留空白
-            sql = sql + " AND category = :category";
-            // enum 的 name 方法 轉成字串
-            map.put("category", productQueryParams.getCategory().name());
-        }
-
-        // 模糊查詢
-        if (productQueryParams.getSearch() != null) {
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch() + "%");
-        }
+        sql = addFilteringSql(sql, map, productQueryParams);
 
         // 將 count 的值，轉換成 Integer 的值
         Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
@@ -57,19 +45,7 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
-        // 拼接查詢
-        if (productQueryParams.getCategory() != null) {
-            // AND 前面要預留空白
-            sql = sql + " AND category = :category";
-            // enum 的 name 方法 轉成字串
-            map.put("category", productQueryParams.getCategory().name());
-        }
-
-        // 模糊查詢
-        if (productQueryParams.getSearch() != null) {
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch() + "%");
-        }
+        sql = addFilteringSql(sql, map, productQueryParams);
 
         // order by 只能拼接字串，沒有辨法使用 map.put
         // 語句要前後空白
@@ -161,5 +137,23 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId", productId);
 
         namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams) {
+        // 拼接查詢
+        if (productQueryParams.getCategory() != null) {
+            // AND 前面要預留空白
+            sql = sql + " AND category = :category";
+            // enum 的 name 方法 轉成字串
+            map.put("category", productQueryParams.getCategory().name());
+        }
+
+        // 模糊查詢
+        if (productQueryParams.getSearch() != null) {
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
+        }
+
+        return sql;
     }
 }
