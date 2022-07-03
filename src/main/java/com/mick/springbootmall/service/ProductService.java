@@ -3,9 +3,14 @@ package com.mick.springbootmall.service;
 import com.mick.springbootmall.dto.ProductRequest;
 import com.mick.springbootmall.model.Product;
 
+import java.util.List;
+
 /* 同樣也是 getProductById */
 /* 表示提供的功能 */
 public interface ProductService {
+
+    List<Product> getProducts();
+
     Product getProductById(Integer productId);
 
     Integer createProduct(ProductRequest productRequest);
