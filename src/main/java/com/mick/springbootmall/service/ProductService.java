@@ -10,6 +10,8 @@ import java.util.List;
 /* 表示提供的功能 */
 public interface ProductService {
 
+    Integer countProduct(ProductQueryParams productQueryParams);
+
     List<Product> getProducts(ProductQueryParams productQueryParams);
 
     Product getProductById(Integer productId);

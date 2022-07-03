@@ -5,6 +5,7 @@ import com.mick.springbootmall.dto.ProductQueryParams;
 import com.mick.springbootmall.dto.ProductRequest;
 import com.mick.springbootmall.model.Product;
 import com.mick.springbootmall.service.ProductService;
+import com.mick.springbootmall.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             // 查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -48,8 +49,18 @@ public class ProductController {
         // 前端會自動把字串轉成 enum
         List<Product> productList = productService.getProducts(productQueryParams);
 
+        // 根據查詢條件，計算總數筆
+        Integer total = productService.countProduct(productQueryParams);
+
+        // 設定 page 分頁
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);           // 商品總數資訊
+        page.setResults(productList);   // 把商品資訊的值，放入 result 變數裡
+
         // 不管有沒有查到商品數據都是回傳 200
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
     @GetMapping("/products/{productId}")
