@@ -1,7 +1,7 @@
 package com.mick.springbootmall.dao.impl;
 
-import com.mick.springbootmall.constant.ProductCategory;
 import com.mick.springbootmall.dao.ProductDao;
+import com.mick.springbootmall.dto.ProductQueryParams;
 import com.mick.springbootmall.dto.ProductRequest;
 import com.mick.springbootmall.model.Product;
 import com.mick.springbootmall.rowmapper.ProductRowMapper;
@@ -24,7 +24,7 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, " +
                 "price, stock, description, created_date, last_modified_date " +
                 "FROM product WHERE 1=1";
@@ -32,17 +32,17 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
 
         // 拼接查詢
-        if(category != null) {
+        if (productQueryParams.getCategory() != null) {
             // AND 前面要預留空白
             sql = sql + " AND category = :category";
             // enum 的 name 方法 轉成字串
-            map.put("category", category.name());
+            map.put("category", productQueryParams.getCategory().name());
         }
 
         // 模糊查詢
-        if(search != null) {
+        if (productQueryParams.getSearch() != null) {
             sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + search + "%");
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
@@ -65,7 +65,7 @@ public class ProductDaoImpl implements ProductDao {
         // 要 RowMapper 轉換
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
-        if(productList.size() > 0)
+        if (productList.size() > 0)
             return productList.get(0);
         else
             return null;
