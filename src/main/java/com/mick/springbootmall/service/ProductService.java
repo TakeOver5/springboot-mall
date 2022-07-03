@@ -1,5 +1,6 @@
 package com.mick.springbootmall.service;
 
+import com.mick.springbootmall.constant.ProductCategory;
 import com.mick.springbootmall.dto.ProductRequest;
 import com.mick.springbootmall.model.Product;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /* 表示提供的功能 */
 public interface ProductService {
 
-    List<Product> getProducts();
+    List<Product> getProducts(ProductCategory category, String search);
 
     Product getProductById(Integer productId);
 

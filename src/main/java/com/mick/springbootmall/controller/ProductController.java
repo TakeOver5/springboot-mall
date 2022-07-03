@@ -1,5 +1,6 @@
 package com.mick.springbootmall.controller;
 
+import com.mick.springbootmall.constant.ProductCategory;
 import com.mick.springbootmall.dto.ProductRequest;
 import com.mick.springbootmall.model.Product;
 import com.mick.springbootmall.service.ProductService;
@@ -18,8 +19,12 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
-        List<Product> productList = productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+    ) {
+        // 前端會自動把字串轉成 enum
+        List<Product> productList = productService.getProducts(category, search);
 
         // 不管有沒有查到商品數據都是回傳 200
         return ResponseEntity.status(HttpStatus.OK).body(productList);
