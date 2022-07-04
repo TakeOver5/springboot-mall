@@ -1,5 +1,8 @@
 package com.mick.springbootmall.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 /* 實作和 User table 一一對應的變數 */
@@ -7,7 +10,10 @@ public class User {
 
     private Integer userId;
     private String email;
+
+    @JsonIgnore
     private String password;
+
     private Date createdDate;
     private Date lastModifiedDate;
 
