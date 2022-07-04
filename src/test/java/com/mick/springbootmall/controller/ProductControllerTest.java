@@ -58,7 +58,7 @@ public class ProductControllerTest {
     }
 
     // 創建商品
-    /*@Transactional
+    @Transactional
     @Test
     public void createProduct_success() throws Exception {
         ProductRequest productRequest = new ProductRequest();
@@ -83,9 +83,9 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.price", equalTo(100)))
                 .andExpect(jsonPath("$.stock", equalTo(2)))
                 .andExpect(jsonPath("$.description", nullValue()))
-                .andExpect(jsonPath("$.createdDate", notNullValue()))
+                .andExpect(jsonPath("$.createDate", notNullValue()))
                 .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
-    }*/
+    }
 
     @Transactional
     @Test
