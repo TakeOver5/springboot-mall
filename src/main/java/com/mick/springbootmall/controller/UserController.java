@@ -1,5 +1,6 @@
 package com.mick.springbootmall.controller;
 
+import com.mick.springbootmall.dto.UserLoginRequest;
 import com.mick.springbootmall.dto.UserRegisterRequest;
 import com.mick.springbootmall.model.User;
 import com.mick.springbootmall.service.UserService;
@@ -26,5 +27,14 @@ public class UserController {
         User user = userService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    // 登入功能要用 POST
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
+        // 成功登入的 user 數據
+        User user = userService.login(userLoginRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }
