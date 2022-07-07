@@ -4,6 +4,7 @@ import com.mick.springbootmall.dao.OrderDao;
 import com.mick.springbootmall.dao.ProductDao;
 import com.mick.springbootmall.dto.BuyItem;
 import com.mick.springbootmall.dto.CreateOrderRequest;
+import com.mick.springbootmall.model.Order;
 import com.mick.springbootmall.model.OrderItem;
 import com.mick.springbootmall.model.Product;
 import com.mick.springbootmall.service.OrderService;
@@ -22,6 +23,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ProductDao productDao;
+
+    @Override
+    public Order getOrderById(Integer orderId) {
+
+        // 取得訂單
+        Order order = orderDao.getOrderById(orderId);
+
+        // 取得 Item
+        List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(orderId);
+
+        // 合併數據一張訂單有多個 item，要擴充 Order class
+        order.setOrderItemList(orderItemList);
+
+        return order;
+    }
 
     @Transactional
     @Override
